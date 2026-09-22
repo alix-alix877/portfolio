@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: linear-gradient(135deg, #2563eb, #4338ca);
+            color: #ffffff;
+            padding: 80px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        header p {
+            font-size: 1.25rem;
+            color: #dbeafe;
+            margin-bottom: 30px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .btn-primary {
+            background-color: #ffffff;
+            color: #2563eb;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #f9fafb;
+        }
+        .btn-secondary {
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: 1px solid #60a5fa;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover {
+            background-color: #2563eb;
+        }
+        .section-about {
+            margin: 60px auto;
+        }
+        .card-about {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            border-left: 5px solid #2563eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 15px;
+            border-left: 4px solid #2563eb;
+        }
+        .text-content {
+            color: #4b5563;
+            font-size: 1.1rem;
+        }
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 60px;
+        }
+        .skill-badge {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid #dbeafe;
+        }
+        .projects-section {
+            margin-bottom: 80px;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .project-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f3f4f6;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+        .project-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f3f4f6;
+        }
+        .project-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+        .project-desc {
+            color: #4b5563;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #f3f4f6;
+        }
+        .project-btn {
+            background-color: #2563eb;
+            color: #ffffff;
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .project-btn:hover {
+            background-color: #1d4ed8;
+        }
+        footer {
+            background-color: #111827;
+            color: #9ca3af;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        footer p.footer-title {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1 id="prof-name">Loading...</h1>
+            <p id="prof-title">Loading...</p>
+            <div class="btn-container">
+                <a href="#projects" class="btn-primary">My Projects</a>
+                <a id="prof-cv" href="#" target="_blank" class="btn-secondary hidden">Download CV</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="section-about">
+            <div class="card-about">
+                <h2 class="section-title">About Me</h2>
+                <p id="prof-about" class="text-content">Loading profile information...</p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Skills</h2>
+            <div id="skills-container" class="skills-grid"></div>
+        </section>
+
+        <section id="projects" class="projects-section">
+            <h2 class="section-title">Projects Showcase</h2>
+            <div id="projects-grid" class="projects-grid"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="footer-title">Contact Me</p>
+        <p style="font-size: 0.85rem;">&copy; 2026 Portfolio</p>
+    </footer>
+
+    <script>
+        var username = "alix-alix877"; 
+        var repo = "portfolio"; 
+
+        async function loadProfile() {
+            try {
+                var res = await fetch('https://raw.githubusercontent/' + username + '/' + repo + '/main/data/profile.json?t=' + Date.now());
+                if (!res.ok) return;
+                var data = await res.json();
+                
+                document.getElementById('prof-name').innerText = data.name || "Name";
+                document.getElementById('prof-title').innerText = data.title || "Title";
+                document.getElementById('prof-about').innerText = data.about || "No description available.";
+                
+                if (data.cv) {
+                    var cvBtn = document.getElementById('prof-cv');
+                    cvBtn.href = data.cv;
+                    cvBtn.style.display = "inline-block";
+                }
+
+                var skillsContainer = document.getElementById('skills-container');
+                skillsContainer.innerHTML = "";
+                if (data.skills) {
+                    var skillsArray = data.skills.split(',');
+                    for (var i = 0; i < skillsArray.length; i++) {
+                        var skill = skillsArray[i].trim();
+                        if (skill) {
+                            skillsContainer.innerHTML += '<span class="skill-badge">' + skill + '</span>';
+                        }
+                    }
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadProjects() {
+            var grid = document.getElementById('projects-grid');
+            try {
+                var response = await fetch('https://api.github.com/repos/' + username + '/' + repo + '/contents/data/projects?t=' + Date.now());
+                if (!response.ok) {
+                    grid.innerHTML = '<p style="color: #6b7280;">No projects found.</p>';
+                    return;
+                }
+                var files = await response.json();
+                
+                files.sort(function(a, b) { return b.name.localeCompare(a.name); });
+                
+                grid.innerHTML = "";
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (file.name.endsWith('.json')) {
+                        var projectRes = await fetch(file.download_url);
+                        var project = await projectRes.json();
+                        
+                        var linksHtml = "";
+                        if (project.links && project.links.length > 0) {
+                            for (var j = 0; j < project.links.length; j++) {
+                                var l = project.links[j];
+                                linksHtml += '<a href="' + l.url + '" target="_blank" class="project-btn">' + l.name + '</a>';
+                            }
+                        }
+
+                        grid.innerHTML += '<div class="project-card">' +
+                            '<img src="' + project.image + '" class="project-img" alt="">' +
+                            '<div class="project-body">' +
+                                '<h3 class="project-title">' + project.title + '</h3>' +
+                                '<p class="project-desc">' + project.description + '</p>' +
+                                '<div class="project-links">' + linksHtml + '</div>' +
+                            '</div>' +
+                        '</div>';
+                    }
+                }
+            } catch (e) {
+                grid.innerHTML = '<p style="color: #6b7280;">Failed to load projects showcase.</p>';
+            }
+        }
+
+        window.onload = function() {
+            loadProfile();
+            loadProjects();
+        };
+    </script>
+</body>
+</html>
