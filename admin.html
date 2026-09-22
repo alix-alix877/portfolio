@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Admin Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            padding: 20px;
+        }
+        .admin-card {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+        h1 {
+            color: #2563eb;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px solid #f3f4f6;
+            padding-bottom: 15px;
+        }
+        .token-box {
+            background-color: #fef3c7;
+            border: 1px solid #fde68a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        .token-box label {
+            display: block;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        .flex-row {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background-color: #f9fafb;
+        }
+        input:focus, textarea:focus {
+            outline: 2px solid #3b82f6;
+            background-color: #ffffff;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-yellow {
+            background-color: #d97706;
+            color: white;
+        }
+        .btn-yellow:hover { background-color: #b45309; }
+        .btn-blue {
+            background-color: #2563eb;
+            color: white;
+            margin-top: 15px;
+        }
+        .btn-blue:hover { background-color: #1d4ed8; }
+        .btn-green {
+            background-color: #16a34a;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+        }
+        .btn-green:hover { background-color: #15803d; }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 25px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1rem;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            border-radius: 0;
+        }
+        .tab-btn.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+            font-weight: bold;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        @media (min-width: 768px) {
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .full-width { grid-column: span 2; }
+        }
+        .layout-split {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        @media (min-width: 992px) {
+            .layout-split { grid-template-columns: 1.2fr 0.8fr; }
+        }
+        .project-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .project-thumb {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 6px;
+            background-color: #e5e7eb;
+        }
+        .btn-delete {
+            background-color: white;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+        .btn-delete:hover { background-color: #fef2f2; }
+        .links-area {
+            background-color: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+        .badge {
+            background-color: #eff6ff;
+            color: #1e40af;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin: 3px;
+            border: 1px solid #bfdbfe;
+        }
+        .badge button {
+            background: none;
+            color: #ef4444;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <h1>Portfolio Admin Control Panel</h1>
+
+        <div class="token-box">
+            <label>GitHub Personal Access Token:</label>
+            <div class="flex-row">
+                <input type="password" id="github-token" placeholder="Paste your GitHub token here...">
+                <button onclick="saveToken()" class="btn-yellow">Save</button>
+            </div>
+            <p style="font-size: 0.75rem; color: #b45309; margin-top: 5px;">Saved safely inside your browser localStorage.</p>
+        </div>
+
+        <div class="tabs">
+            <button onclick="switchTab('profile-tab')" id="btn-profile-tab" class="tab-btn active">Profile Settings</button>
+            <button onclick="switchTab('projects-tab')" id="btn-projects-tab" class="tab-btn">Manage Projects</button>
+        </div>
+
+        <div id="profile-tab" class="tab-content">
+            <div class="form-grid">
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Full Name:</label>
+                    <input type="text" id="user-name">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Job Title / Profession:</label>
+                    <input type="text" id="user-title" placeholder="e.g. Graphic Designer">
+                </div>
+                <div class="full-width">
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">About Me Description:</label>
+                    <textarea id="user-about" rows="4"></textarea>
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Skills (separate with commas):</label>
+                    <input type="text" id="user-skills" placeholder="e.g. Photoshop, Excel, UI Design">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">CV Link URL:</label>
+                    <input type="text" id="user-cv" placeholder="https://...">
+                </div>
+            </div>
+            <button onclick="updateProfile()" class="btn-blue">Save Profile Info</button>
+        </div>
+
+        <div id="projects-tab" class="tab-content hidden text-start">
+            <div class="layout-split">
+                <div>
+                    <h3 style="margin-bottom:15px; color:#374151;">Add New Project</h3>
+                    <div style="display:flex; flex-direction:column; gap:15px;">
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Project Title:</label>
+                            <input type="text" id="proj-title">
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Project Description:</label>
+                            <textarea id="proj-desc" rows="3"></textarea>
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Project Image (Select File):</label>
+                            <input type="file" id="proj-img" accept="image/*" style="width:100%; padding:8px; border:1px dashed #ccc; background:#fafafa; border-radius:8px;">
+                        </div>
+                        <div class="links-area">
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Project Links:</label>
+                            <div class="flex-row" style="margin-bottom:10px;">
+                                <input type="text" id="link-name" placeholder="Link Button Name (e.g. Website)" style="width:35%;">
+                                <input type="text" id="link-url" placeholder="https://..." style="width:55%;">
+                                <button onclick="addLinkToList()" style="background:#1f2937; color:white; padding:10px 15px;">+</button>
+                            </div>
+                            <div id="links-list"></div>
+                        </div>
+                        <button onclick="publishProject()" class="btn-green">Publish Project Live</button>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="margin-bottom:15px; color:#374151;">Currently Published Projects</h3>
+                    <div id="admin-projects-list">
+                        <p style="color:#9ca3af;">Loading database...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var owner = "alix-alix877"; 
+        var repo = "portfolio"; 
+        var projectLinks = [];
+
+        window.onload = function() {
+            var savedToken = localStorage.getItem('gh_token');
+            if (savedToken) { document.getElementById('github-token').value = savedToken; }
+            loadCurrentProjects();
+        };
+
+        function saveToken() {
+            var t = document.getElementById('github-token').value;
+            localStorage.setItem('gh_token', t);
+            alert('Security token saved successfully!');
+            loadCurrentProjects();
+        }
+
+        function getToken() { return localStorage.getItem('gh_token') || ''; }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.add('hidden'); });
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn-profile-tab').className = tabId === 'profile-tab' ? 'tab-btn active' : 'tab-btn';
+            document.getElementById('btn-projects-tab').className = tabId === 'projects-tab' ? 'tab-btn active' : 'tab-btn';
+        }
+
+        function addLinkToList() {
+            var name = document.getElementById('link-name').value;
+            var url = document.getElementById('link-url').value;
+            if (!name || !url) return alert('Fill name and URL fields');
+            projectLinks.push({name: name, url: url});
+            document.getElementById('link-name').value = "";
+            document.getElementById('link-url').value = "";
+            renderLinks();
+        }
+
+        function renderLinks() {
+            var container = document.getElementById('links-list');
+            container.innerHTML = "";
+            projectLinks.forEach(function(l, idx) {
+                container.innerHTML += '<span class="badge">' + l.name + ' <button onclick="projectLinks.splice(' + idx + ',1);renderLinks();">×</button></span>';
+            });
+        }
+
+        function compressImage(file) {
+            return new Promise(function(resolve) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    var img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+                        var max_width = 800; 
+                        var scale = max_width / img.width;
+                        canvas.width = max_width;
+                        canvas.height = img.height * scale;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.7).split(','));
+                    };
+                };
+            });
+        }
+
+        async function updateProfile() {
+            var token = getToken();
+            if (!token) return alert('Save GitHub Token first');
+
+            var profileData = {
+                name: document.getElementById('user-name').value,
+                title: document.getElementById('user-title').value,
+                about: document.getElementById('user-about').value,
+                skills: document.getElementById('user-skills').value,
+                cv: document.getElementById('user-cv').value
+            };
+
+            var path = "data/profile.json";
+            var sha = "";
+            var check = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path);
+            if (check.ok) { var f = await check.json(); sha = f.sha; }
+
+            var res = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
+                method: 'PUT',
+                headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: "Update profile data",
+                    content: btoa(unescape(encodeURIComponent(JSON.stringify(profileData, null, 2)))),
+                    sha: sha ? sha : undefined
+                })
+            });
+
+            if (res.ok) alert("Upload successful! Updates take about 1 minute to reflect.");
+            else alert("Error saving profile settings.");
+        }
+
+        async function publishProject() {
+            var token = getToken();
+            var title = document.getElementById('proj-title').value;
+            var desc = document.getElementById('proj-desc').value;
+            var imgInput = document.getElementById('proj-img').files;
+
+            if (!token || !title || !desc || imgInput.length === 0) return alert('Fill all mandatory project fields and choose an image');
+
+            var base64Img = await compressImage(imgInput[0]);
+            var imgPath = "assets/images/img-" + Date.now() + ".jpg";
+            
+            var imgRes = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + imgPath, {
+                method: 'PUT',
+                headers: { 'Authorization': 'token ' + token },
+                body: JSON.stringify({ message: "Upload project image", content: base64Img[1] })
+            });
+
+            if (!imgRes.ok) return alert('Failed image upload, check your token settings');
+            var imgData = await imgRes.json();
+            var finalImgUrl = imgData.content.download_url;
+
+            var projectData = { title: title, description: desc, image: finalImgUrl, links: projectLinks };
+            var projPath = "data/projects/project-" + Date.now() + ".json";
+
+            var projRes = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + projPath, {
+                method: 'PUT',
+                headers: { 'Authorization': 'token ' + token },
+                body: JSON.stringify({
+                    message: "Add project: " + title,
+                    content: btoa(unescape(encodeURIComponent(JSON.stringify(projectData, null, 2))))
+                })
+            });
+
+            if (projRes.ok) {
+                alert("Upload successful! Updates take about 1 minute to reflect.");
+                document.getElementById('proj-title').value = "";
+                document.getElementById('proj-desc').value = "";
+                document.getElementById('proj-img').value = "";
+                projectLinks = [];
+                renderLinks();
+                loadCurrentProjects();
+            }
+        }
+
+        async function loadCurrentProjects() {
+            var listContainer = document.getElementById('admin-projects-list');
+            try {
+                var res = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/data/projects?t=' + Date.now());
+                if (!res.ok) { listContainer.innerHTML = "<p>No active projects found.</p>"; return; }
+                var files = await res.json();
+                
+                listContainer.innerHTML = "";
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (file.name.endsWith('.json')) {
+                        var pRes = await fetch(file.download_url);
+                        var p = await pRes.json();
+                        listContainer.innerHTML += '<div class="project-item">' +
+                            '<div class="project-info">' +
+                                '<img src="' + p.image + '" class="project-thumb">' +
+                                '<span style="font-size:0.9rem; font-weight:600;">' + p.title + '</span>' +
+                            '</div>' +
+                            '<button onclick="deleteProject('' + file.path + '', '' + file.sha + '')" class="btn-delete">Delete ❌</button>' +
+                        '</div>';
+                    }
+                }
+            } catch(e) { listContainer.innerHTML = "<p>Save your token to fetch current dashboard database.</p>"; }
+        }
+
+        async function deleteProject(path, sha) {
+            var token = getToken();
+            if (!token) return alert('Save token first to allow deletion');
+            if (!confirm('Are you sure you want to delete this project permanently?')) return;
+
+            var res = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + path, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: "Remove project item", sha: sha })
+            });
+
+            if (res.ok) {
+                alert("Delete successful! Updates take about 1 minute to disappear.");
+                loadCurrentProjects();
+            } else { alert("Failed to execute project deletion."); }
+        }
+    </script>
+</body>
+</html>
